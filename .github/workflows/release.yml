@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.17.0"
+          node-version: "20.8.1"
 
       #  Workflow runs also cannot restore caches created for different tag names.
       # - name: Get node_modules cache
