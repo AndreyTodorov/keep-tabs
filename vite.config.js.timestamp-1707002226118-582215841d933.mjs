@@ -1,0 +1,22 @@
+// vite.config.js
+import {
+	defineConfig
+} from "file:///Users/andrey/Projects-personal/keep-tabs/node_modules/.pnpm/vite@5.0.12_@types+node@18.19.14/node_modules/vite/dist/node/index.js";
+import laravel
+	from "file:///Users/andrey/Projects-personal/keep-tabs/node_modules/.pnpm/laravel-vite-plugin@1.0.1_vite@5.0.12/node_modules/laravel-vite-plugin/dist/index.js";
+import react
+	from "file:///Users/andrey/Projects-personal/keep-tabs/node_modules/.pnpm/@vitejs+plugin-react@4.2.1_vite@5.0.12/node_modules/@vitejs/plugin-react/dist/index.mjs";
+
+var vite_config_default = defineConfig({
+	plugins: [
+		laravel({
+			input: "resources/js/app.tsx",
+			refresh: true
+		}),
+		react()
+	]
+});
+export {
+	vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCIvVXNlcnMvYW5kcmV5L1Byb2plY3RzLXBlcnNvbmFsL2tlZXAtdGFic1wiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9maWxlbmFtZSA9IFwiL1VzZXJzL2FuZHJleS9Qcm9qZWN0cy1wZXJzb25hbC9rZWVwLXRhYnMvdml0ZS5jb25maWcuanNcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfaW1wb3J0X21ldGFfdXJsID0gXCJmaWxlOi8vL1VzZXJzL2FuZHJleS9Qcm9qZWN0cy1wZXJzb25hbC9rZWVwLXRhYnMvdml0ZS5jb25maWcuanNcIjtpbXBvcnQgeyBkZWZpbmVDb25maWcgfSBmcm9tIFwidml0ZVwiO1xuaW1wb3J0IGxhcmF2ZWwgZnJvbSBcImxhcmF2ZWwtdml0ZS1wbHVnaW5cIjtcbmltcG9ydCByZWFjdCBmcm9tIFwiQHZpdGVqcy9wbHVnaW4tcmVhY3RcIjtcblxuZXhwb3J0IGRlZmF1bHQgZGVmaW5lQ29uZmlnKHtcblx0cGx1Z2luczogW1xuXHRcdGxhcmF2ZWwoe1xuXHRcdFx0aW5wdXQ6IFwicmVzb3VyY2VzL2pzL2FwcC50c3hcIixcblx0XHRcdHJlZnJlc2g6IHRydWUsXG5cdFx0fSksXG5cdFx0cmVhY3QoKSxcblx0XSxcbn0pO1xuIl0sCiAgIm1hcHBpbmdzIjogIjtBQUE2UyxTQUFTLG9CQUFvQjtBQUMxVSxPQUFPLGFBQWE7QUFDcEIsT0FBTyxXQUFXO0FBRWxCLElBQU8sc0JBQVEsYUFBYTtBQUFBLEVBQzNCLFNBQVM7QUFBQSxJQUNSLFFBQVE7QUFBQSxNQUNQLE9BQU87QUFBQSxNQUNQLFNBQVM7QUFBQSxJQUNWLENBQUM7QUFBQSxJQUNELE1BQU07QUFBQSxFQUNQO0FBQ0QsQ0FBQzsiLAogICJuYW1lcyI6IFtdCn0K
