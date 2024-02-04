@@ -19,19 +19,28 @@ jobs:
         with:
           node-version: "20.8.1"
 
-      #  Workflow runs also cannot restore caches created for different tag names.
-      # - name: Get node_modules cache
-      #   uses: actions/cache@v3
-      #   id: node_modules
-      #   env:
-      #     cache-name: node-modules
-      #   with:
-      #     path: |
-      #       **/node_modules
-      #     key: ${{ runner.os }}-18.16.0-${{ env.cache-name }}-main-${{ hashFiles('**/yarn.lock') }}
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: yarn add semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/release-notes-generator @semantic-release/github
+        run: pnpm add semantic-release @semantic-release/changelog @semantic-release/commit-analyzer @semantic-release/git @semantic-release/release-notes-generator @semantic-release/github
+
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
