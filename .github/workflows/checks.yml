@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+env:
+  STORE_PATH:
+
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -26,7 +29,6 @@ jobs:
         shell: bash
         run: |
           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
-
       - uses: actions/cache@v4
         name: Setup pnpm cache
         with:
@@ -39,16 +41,16 @@ jobs:
         run: pnpm install
 
       - name: Prettier Fix
-        run: yarn prettier:fix
+        run: pnpm run prettier:fix
 
       - name: Prettier check
-        run: yarn prettier:check
+        run: yarn run prettier:check
 
       - name: Lint Fix
-        run: yarn lint:fix
+        run: yarn run lint:fix
 
       - name: Lint check
-        run: yarn lint:check
+        run: yarn run lint:check
 
       - name: Typescript errors
-        run: yarn typecheck
+        run: yarn run typecheck
