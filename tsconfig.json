@@ -19,5 +19,7 @@
 		"resources/js/**/*.ts",
 		"resources/js/**/*.tsx",
 		"resources/js/**/*.d.ts",
+		// "./prettier.config.cjs",
+		// ".eslintrc.cjs",
 	],
 }
