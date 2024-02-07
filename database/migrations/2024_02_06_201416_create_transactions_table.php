@@ -11,12 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('tabs', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+            $table->string('name', 50)->nullable(false);
+            $table->string('description', 100);
+
+            // Timestamps
+            $table->softDeletes();
+            $table->timestamps();
+        });
+
         Schema::create('transactions', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->date('date');
-            $table->decimal('amount');
-            $table->text('comment');
-            $table->text('description');
+            $table->date('date')->nullable(false);
+            $table->decimal('amount')->nullable(false);
+            $table->string('comment', 200);
+            $table->string('description', 200);
 
             // Timestamps
             $table->softDeletes();
@@ -26,6 +36,20 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('tab_id')->constrained()->cascadeOnDelete();
         });
+
+        // Join table
+        Schema::create('tab_user', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+            $table->unsignedBigInteger('user_id');
+            $table->ulid('tab_id');
+
+            $table->timestamps();
+
+            $table->foreign('user_id')->references('id')
+                ->on('users')->onDelete('cascade');
+            $table->foreign('tab_id')->references('id')
+                ->on('tabs')->onDelete('cascade');
+        });
     }
 
     /**
@@ -34,5 +58,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('transactions');
+        Schema::dropIfExists('tabs');
     }
 };

@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Transaction extends Model
+class Tab extends Model
 {
     use HasUlids;
     use SoftDeletes;
@@ -19,13 +20,13 @@ class Transaction extends Model
      */
     protected $keyType = 'string';
 
-    public function user(): BelongsTo
+    public function users(): BelongsToMany
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 
-    public function tab(): BelongsTo
+    public function transactions(): HasMany
     {
-        return $this->belongsTo(Tab::class);
+        return $this->hasMany(Transaction::class);
     }
 }
