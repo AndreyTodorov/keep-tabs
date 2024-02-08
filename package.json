@@ -10,7 +10,7 @@
 		"typecheck": "tsc --project tsconfig.json --noEmit",
 		"prettier:fix": "prettier --write .",
 		"prettier:check": "prettier --check .",
-		"pre-check": "npx lint-staged && yarn typecheck"
+		"pre-commit-check": "npx lint-staged && pnpm run typecheck"
 	},
 	"devDependencies": {
 		"@headlessui/react": "^1.4.2",
@@ -50,6 +50,11 @@
 		]
 	},
 	"dependencies": {
-		"@typescript-eslint/parser": "^6.20.0"
+		"@typescript-eslint/parser": "^6.20.0",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.1.0",
+		"lucide-react": "^0.323.0",
+		"tailwind-merge": "^2.2.1",
+		"tailwindcss-animate": "^1.0.7"
 	}
 }
