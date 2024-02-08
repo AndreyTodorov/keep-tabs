@@ -18,7 +18,7 @@ export default function Register() {
 		return () => {
 			reset("password", "password_confirmation");
 		};
-	}, []);
+	}, [reset]);
 
 	const submit: FormEventHandler = (e) => {
 		e.preventDefault();

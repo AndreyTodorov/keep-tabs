@@ -24,7 +24,7 @@ export default function Login({
 		return () => {
 			reset("password");
 		};
-	}, []);
+	}, [reset]);
 
 	const submit: FormEventHandler = (e) => {
 		e.preventDefault();

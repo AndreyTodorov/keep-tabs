@@ -15,7 +15,7 @@ export default function ConfirmPassword() {
 		return () => {
 			reset("password");
 		};
-	}, []);
+	}, [reset]);
 
 	const submit: FormEventHandler = (e) => {
 		e.preventDefault();

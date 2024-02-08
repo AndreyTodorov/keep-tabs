@@ -40,15 +40,10 @@ return new class extends Migration
         // Join table
         Schema::create('tab_user', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->unsignedBigInteger('user_id');
-            $table->ulid('tab_id');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignUlid('tab_id')->constrained();
 
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')
-                ->on('users')->onDelete('cascade');
-            $table->foreign('tab_id')->references('id')
-                ->on('tabs')->onDelete('cascade');
         });
     }
 
