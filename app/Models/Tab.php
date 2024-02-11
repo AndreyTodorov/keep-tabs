@@ -13,12 +13,22 @@ class Tab extends Model
     use HasUlids;
     use SoftDeletes;
 
+    const STATUS_ACTIVE = 'active';
+    const STATUS_PENDING = 'pending';
+
     /**
      * The data type of the auto-incrementing ID.
      *
      * @var string
      */
     protected $keyType = 'string';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'description'];
 
     public function users(): BelongsToMany
     {

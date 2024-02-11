@@ -19,6 +19,13 @@ class Transaction extends Model
      */
     protected $keyType = 'string';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['date', 'amount', 'comment', 'description'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

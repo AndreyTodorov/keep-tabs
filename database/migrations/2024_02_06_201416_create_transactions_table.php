@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Tab;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,6 +16,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->string('name', 50)->nullable(false);
             $table->string('description', 100);
+            $table->enum('status', [Tab::STATUS_ACTIVE, Tab::STATUS_PENDING])->default(Tab::STATUS_PENDING);
 
             // Timestamps
             $table->softDeletes();
