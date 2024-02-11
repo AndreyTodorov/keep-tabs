@@ -4,6 +4,8 @@ import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationFor
 import { Head } from "@inertiajs/react";
 import { type PageProps } from "@/types";
 import AuthenticatedLayout from "@/Layouts/Authenticated";
+import { TransactionForm } from "@/Components/Forms/Transaction";
+import { PasswordUpdateForm } from "@/Components/Forms/PasswordUpdate";
 
 export default function Edit({
 	auth,
@@ -18,7 +20,10 @@ export default function Edit({
 			<Head title="Profile" />
 
 			<div className="py-12">
-				<div className="mx-auto max-w-7xl space-y-6 sm:px-6 lg:px-8">
+				<div className="mx-auto max-w-xl space-y-6 sm:px-6 lg:px-8">
+					<TransactionForm />
+					<PasswordUpdateForm />
+
 					<div className="bg-white p-4 shadow dark:bg-gray-800 sm:rounded-lg sm:p-8">
 						<UpdateProfileInformationForm
 							mustVerifyEmail={mustVerifyEmail}
