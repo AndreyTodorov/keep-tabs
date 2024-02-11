@@ -1,9 +1,9 @@
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 import { Head } from "@inertiajs/react";
 import { type PageProps } from "@/types";
+import AuthenticatedLayout from "@/Layouts/Authenticated";
 
 export default function Edit({
 	auth,
@@ -14,14 +14,7 @@ export default function Edit({
 	status?: string;
 }>) {
 	return (
-		<AuthenticatedLayout
-			user={auth.user}
-			header={
-				<h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-					Profile
-				</h2>
-			}
-		>
+		<AuthenticatedLayout user={auth.user}>
 			<Head title="Profile" />
 
 			<div className="py-12">

@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
+use App\Models\Tab;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,13 +18,15 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-	return Inertia::render('Welcome', [
-		'canLogin' => Route::has('login'),
-		'canRegister' => Route::has('register'),
-		'laravelVersion' => Application::VERSION,
-		'phpVersion' => PHP_VERSION,
+	$user = Auth::user();
+	$tabsWithTransactions = Tab::whereHas('users', function ($query) use ($user) {
+		$query->where('users.id', $user->id);
+	})->with('transactions')->get();
+
+	return Inertia::render('Landing', [
+		'tabs' => $tabsWithTransactions
 	]);
-});
+})->middleware(['auth', 'verified'])->name('home');
 
 Route::get('/dashboard', function () {
 	return Inertia::render('Dashboard');
