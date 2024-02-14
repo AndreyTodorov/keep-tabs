@@ -68,12 +68,12 @@ export function PasswordConfirmForm({ className, ...props }: CardProps) {
 								</FormItem>
 							)}
 						/>
+						<CardFooter className="flex items-center justify-end">
+							<Button type="submit"> Confirm</Button>
+						</CardFooter>
 					</form>
 				</Form>
 			</CardContent>
-			<CardFooter className="flex items-center justify-end">
-				<Button type="submit"> Confirm</Button>
-			</CardFooter>
 		</Card>
 	);
 }

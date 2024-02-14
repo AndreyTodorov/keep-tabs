@@ -99,7 +99,6 @@ export function TransactionForm({
 								</FormItem>
 							)}
 						/>
-
 						<FormField
 							control={form.control}
 							name="date"
@@ -144,7 +143,6 @@ export function TransactionForm({
 								</FormItem>
 							)}
 						/>
-
 						<FormField
 							control={form.control}
 							name="comment"
@@ -162,12 +160,14 @@ export function TransactionForm({
 								</FormItem>
 							)}
 						/>
+						<div>Here will live upload button for fotos</div>
+
+						<CardFooter className="flex items-center justify-end">
+							<Button type="submit">{isEditing ? "Edit" : "Add"}</Button>
+						</CardFooter>
 					</form>
 				</Form>
 			</CardContent>
-			<CardFooter className="flex items-center justify-end">
-				<Button type="submit">{isEditing ? "Edit" : "Add"}</Button>
-			</CardFooter>
 		</Card>
 	);
 }

@@ -118,13 +118,13 @@ export function PasswordUpdateForm({ className, ...props }: CardProps) {
 								</FormItem>
 							)}
 						/>
+						<CardFooter className="flex items-center justify-end">
+							{/* TODO: add loading indicator  */}
+							<Button type="submit">Save</Button>
+						</CardFooter>
 					</form>
 				</Form>
 			</CardContent>
-			{/* TODO: add loading indicator  */}
-			<CardFooter className="flex items-center justify-end">
-				<Button type="submit">Save</Button>
-			</CardFooter>
 		</Card>
 	);
 }

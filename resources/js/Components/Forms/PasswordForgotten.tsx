@@ -75,12 +75,12 @@ export function PasswordForgottenForm({ className, ...props }: CardProps) {
 								</FormItem>
 							)}
 						/>
+						<CardFooter className="flex items-center justify-end">
+							<Button type="submit"> Email Password Reset Link</Button>
+						</CardFooter>
 					</form>
 				</Form>
 			</CardContent>
-			<CardFooter className="flex items-center justify-end">
-				<Button type="submit"> Email Password Reset Link</Button>
-			</CardFooter>
 		</Card>
 	);
 }
