@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/Components/ui/button";
-import { Input } from "@/Components/ui/input";
 import {
 	Form,
 	FormControl,
@@ -31,10 +30,11 @@ import {
 	CardContent,
 	CardFooter,
 } from "../ui/card";
+import AmountInput from "../ui/amount-input";
 
 const transactionSchema = z.object({
 	date: z.date(),
-	amount: z.number(),
+	amount: z.string(),
 	comment: z.string().max(200),
 	description: z.string().max(200),
 });
@@ -55,7 +55,7 @@ export function TransactionForm({
 		resolver: zodResolver(transactionSchema),
 		defaultValues: transaction ?? {
 			date: dayjs().toDate(),
-			amount: 0,
+			amount: "",
 			comment: "",
 			description: "",
 		},
@@ -81,7 +81,6 @@ export function TransactionForm({
 			<CardContent>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-						{/* <div className="flex items-center gap-3"> */}
 						<FormField
 							control={form.control}
 							name="amount"
@@ -89,22 +88,18 @@ export function TransactionForm({
 								<FormItem>
 									<FormLabel>Amount</FormLabel>
 									<FormControl>
-										<Input
-											type="number"
-											inputMode="numeric"
+										<AmountInput
+											required
 											className="w-48"
+											precision={2}
 											{...field}
-											onChange={(e) => {
-												if (e.target.value === "")
-													return field.onChange(undefined);
-												field.onChange(Number(e.target.value));
-											}}
 										/>
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
+
 						<FormField
 							control={form.control}
 							name="date"
@@ -149,7 +144,7 @@ export function TransactionForm({
 								</FormItem>
 							)}
 						/>
-						{/* </div> */}
+
 						<FormField
 							control={form.control}
 							name="comment"
@@ -158,7 +153,7 @@ export function TransactionForm({
 									<FormLabel>Comment</FormLabel>
 									<FormControl>
 										<Textarea
-											placeholder="Tell us a little bit about yourself"
+											placeholder="Some description"
 											className="resize-none"
 											{...field}
 										/>
