@@ -28,7 +28,7 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 			</CardHeader>
 			<CardContent>
 				<div>
-					{tab.lastTransactions.map((transaction, index) => (
+					{tab.lastTransactions?.map((transaction, index) => (
 						<div
 							key={index}
 							className="mb-3 flex items-start justify-end gap-2 pb-4 last:mb-0 last:pb-0"

@@ -13,7 +13,7 @@ import {
 	FormMessage,
 } from "@/Components/ui/form";
 import { PasswordInput } from "../ui/password-input";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import {
 	Card,
 	CardContent,
@@ -44,14 +44,15 @@ export function LoginForm({ className, ...props }: CardProps) {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof userLoginSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+		router.post(route("login"), { ...values, user_id: 2 });
 	}
 
 	return (
 		<Card
-			className={cn("w-xl shadow-md dark:border-primary-foreground", className)}
+			className={cn(
+				"max-w-xl shadow-md dark:border-primary-foreground",
+				className,
+			)}
 			{...props}
 		>
 			<CardHeader>
@@ -86,10 +87,9 @@ export function LoginForm({ className, ...props }: CardProps) {
 								</FormItem>
 							)}
 						/>
-						<CardFooter className="flex items-center justify-between">
+						<CardFooter className="flex justify-between gap-3 p-2">
 							{/* // TODO add remember me */}
-
-							<div className="flex items-center gap-2">
+							<div className="flex items-center gap-1">
 								<Link
 									href={route("register")}
 									className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"

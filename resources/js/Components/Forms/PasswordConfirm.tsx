@@ -20,6 +20,7 @@ import {
 } from "../ui/card";
 import { cn } from "@/lib/utils";
 import { PasswordInput } from "../ui/password-input";
+import { router } from "@inertiajs/react";
 
 const PasswordConfirmSchema = z.object({
 	password: z.string().min(4),
@@ -38,10 +39,7 @@ export function PasswordConfirmForm({ className, ...props }: CardProps) {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof PasswordConfirmSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		// route("password.confirm")
-		console.log(values);
+		router.post(route("password.confirm"), { values });
 	}
 
 	return (

@@ -13,7 +13,7 @@ import {
 	FormMessage,
 } from "@/Components/ui/form";
 import { PasswordInput } from "../ui/password-input";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { cn } from "@/lib/utils";
 import {
 	Card,
@@ -50,9 +50,7 @@ export function RegisterForm({ className, ...props }: CardProps) {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof userRegisterSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
+		router.post(route("register"), { values });
 	}
 
 	return (

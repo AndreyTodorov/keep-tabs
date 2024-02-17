@@ -21,6 +21,7 @@ import {
 	CardFooter,
 	CardDescription,
 } from "../ui/card";
+import { router } from "@inertiajs/react";
 
 const PasswordUpdateSchema = z
 	.object({
@@ -47,22 +48,11 @@ export function PasswordUpdateForm({ className, ...props }: CardProps) {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof PasswordUpdateSchema>) {
-		// Do something with the form values.
-		/** onSuccess: () => reset(),
-			onError: (errors) => {
-				if (errors.password) {
-					reset("password", "password_confirmation");
-					passwordInput.current?.focus();
-				}
-
-				if (errors.current_password) {
-					reset("current_password");
-					currentPasswordInput.current?.focus();
-				}
-			}, */
-		// ✅ This will be type-safe and validated.
-		// route("password.update")
-		console.log(values);
+		router.post(
+			route("password.update"),
+			{ values },
+			{ onSuccess: () => form.reset(), onError: () => form.reset() },
+		);
 	}
 
 	return (

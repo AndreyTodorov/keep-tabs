@@ -2,15 +2,24 @@
 
 ## TODO
 
-0. [ ] Add the amount inpuc componenent
+0. [x] Add the amount input componenent
 
-1. [ ] Add new Tab in the DB
+1. [x] Add new Tab in the DB
 
-   - [ ] add "create/edit Tab modal"
+   - [x] add "create/edit Tab modal"
+   - [ ] the final design of the overview Tab
+     - [ ] show users
+     - [ ] current balance
    - [ ] page to view single TAB
 
-2. [ ] Add new Transaction to a TAB
+2. [ ] Seeders
+
+   1. [ ] users
+   2. [ ] tabs
+   3. [ ] transactions
+
+3. [ ] Add new Transaction to a TAB
 
    - [ ] add "create/edit Transaction modal"
 
-3. [ ] Add React Query
+4. [ ] Add React Query

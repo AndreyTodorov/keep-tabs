@@ -21,6 +21,7 @@ import {
 	CardTitle,
 } from "../ui/card";
 import { cn } from "@/lib/utils";
+import { router } from "@inertiajs/react";
 
 const PasswordForgottenSchema = z.object({
 	email: z.string().email(),
@@ -39,15 +40,15 @@ export function PasswordForgottenForm({ className, ...props }: CardProps) {
 
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof PasswordForgottenSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		// route("password.email")
-		console.log(values);
+		router.post(route("password.email"), { values });
 	}
 
 	return (
 		<Card
-			className={cn("w-xl shadow-md dark:border-primary-foreground", className)}
+			className={cn(
+				"max-w-xl shadow-md dark:border-primary-foreground",
+				className,
+			)}
 			{...props}
 		>
 			<CardHeader>
@@ -65,7 +66,7 @@ export function PasswordForgottenForm({ className, ...props }: CardProps) {
 									<FormControl>
 										<Input className="max-w-xl" {...field} />
 									</FormControl>
-									<FormDescription>
+									<FormDescription className="text-balance">
 										Forgot your password? No problem. Just let us know your
 										email address and we will email you a password reset link
 										that will allow you to choose a new one.

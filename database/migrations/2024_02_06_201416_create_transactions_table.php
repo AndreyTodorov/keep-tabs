@@ -3,7 +3,9 @@
 use App\Models\Tab;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Uid\Ulid;
 
 return new class extends Migration
 {
@@ -21,6 +23,9 @@ return new class extends Migration
             // Timestamps
             $table->softDeletes();
             $table->timestamps();
+
+            // Relations
+            $table->foreignId('creator_id')->constrained('users', 'id')->cascadeOnDelete();
         });
 
         Schema::create('transactions', function (Blueprint $table) {
@@ -38,13 +43,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignUlid('tab_id')->constrained()->cascadeOnDelete();
         });
-
         // Join table
         Schema::create('tab_user', function (Blueprint $table) {
-            $table->ulid('id')->primary();
+            $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
             $table->foreignId('user_id')->constrained();
             $table->foreignUlid('tab_id')->constrained();
 
+            // Timestamps
             $table->timestamps();
         });
     }
