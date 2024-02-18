@@ -37,7 +37,11 @@ export default function Landing({ auth, tabs }: LandingProps) {
 			<div className="pl-6 pt-6">
 				<TabCreateDialog />
 			</div>
-			<div className="flex items-center justify-center gap-3 p-6">
+			<div
+				className={
+					"xs:flex-col items-center justify-center gap-3 space-y-3 p-6 sm:flex"
+				}
+			>
 				{tabs.map((tab) => (
 					<TabOverviewCard key={tab.id} tab={tab} />
 				))}

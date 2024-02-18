@@ -65,7 +65,6 @@ export function TabCreateDialog() {
 						Fill out the information for your new tab
 					</DialogDescription>
 				</DialogHeader>
-				{/* // TODO: insert form here */}
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 						<FormField

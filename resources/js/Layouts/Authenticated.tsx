@@ -7,7 +7,7 @@ export default function AuthenticatedLayout({
 	children,
 }: PropsWithChildren<{ user: User }>) {
 	return (
-		<div className="min-h-screen bg-background text-foreground">
+		<div className="min-w-screen min-h-screen bg-background text-foreground">
 			<NavMenu user={user} />
 			<main>{children}</main>
 		</div>

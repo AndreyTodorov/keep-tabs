@@ -30,7 +30,6 @@ Route::get('/', function () {
 		->with('users:id,name')
 		->get();
 
-
 	return Inertia::render('Landing', [
 		'tabs' => $tabsWithTransactions
 	]);

@@ -1,5 +1,3 @@
-import { Plus } from "lucide-react";
-
 import { cn } from "@/lib/utils";
 import { Button } from "@/Components/ui/button";
 import {
@@ -11,6 +9,8 @@ import {
 	CardTitle,
 } from "@/Components/ui/card";
 import { type TabOverview } from "@/Pages/Landing";
+import { Avatar, AvatarFallback } from "./ui/avatar";
+import { TransactionDialogForm } from "./Forms/Transaction";
 
 type CardProps = React.ComponentProps<typeof Card> & {
 	tab: TabOverview;
@@ -19,7 +19,10 @@ type CardProps = React.ComponentProps<typeof Card> & {
 export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 	return (
 		<Card
-			className={cn("w-[380px] dark:border-primary-foreground", className)}
+			className={cn(
+				"max-w-screen dark:border-primary-foreground md:w-[400px]",
+				className,
+			)}
 			{...props}
 		>
 			<CardHeader>
@@ -28,38 +31,40 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 			</CardHeader>
 			<CardContent>
 				<div>
-					{tab.transactions?.map((transaction, index) => (
+					{tab.transactions.reverse().map((transaction, index) => (
 						<div
 							key={index}
 							className="mb-3 flex items-center justify-end gap-2 pb-4 last:mb-0 last:pb-0"
 						>
-							<div className="flex w-full items-center gap-4">
-								<div className="w-4">
-									<span className="flex h-2 w-2 rounded-full bg-sky-500" />
-								</div>
+							<div className="flex w-3/4 items-center gap-4">
+								{/* <div className="w-4"> */}
+								<Avatar className="h-8 w-8 rounded-full bg-sky-600">
+									<AvatarFallback>
+										{transaction.user.name[0].toUpperCase()}
+									</AvatarFallback>
+								</Avatar>
 
 								<div className="space-y-1">
-									<p className="text-sm font-medium leading-none">
-										{transaction.user.name}: {transaction.amount} лв
+									<p className="text-sm font-light leading-none text-muted-foreground">
+										{transaction.date}
 									</p>
 									<p className="text-xs text-muted-foreground">
 										{transaction.description}
 									</p>
 								</div>
 							</div>
-							<div className="flex w-full justify-end text-sm text-muted-foreground">
-								{transaction.date}
-							</div>
+							<div className="w-1/4 pl-2 text-lg">{transaction.amount} лв</div>
 						</div>
 					))}
+					<div>Summary</div>
 				</div>
 			</CardContent>
 			<CardFooter className="flex gap-1">
 				{/* TODO: buttons links */}
-				<Button className="w-full">
-					<Plus className="mr-2 h-4 w-4" /> Add
+				<TransactionDialogForm />
+				<Button variant="outline" className="w-full">
+					Details
 				</Button>
-				<Button className="w-full">Details</Button>
 			</CardFooter>
 		</Card>
 	);

@@ -19,18 +19,21 @@ import {
 import { DATE_FORMATS } from "@/lib/dateFormats";
 import dayjs from "dayjs";
 import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
+import { CalendarIcon, Plus } from "lucide-react";
 import { Calendar } from "../ui/calendar";
 import { useState } from "react";
 import { Textarea } from "../ui/textarea";
 import {
-	Card,
-	CardHeader,
-	CardTitle,
-	CardContent,
-	CardFooter,
-} from "../ui/card";
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/Components/ui/dialog";
 import AmountInput from "../ui/amount-input";
+import { router } from "@inertiajs/react";
 
 const transactionSchema = z.object({
 	date: z.date(),
@@ -40,16 +43,15 @@ const transactionSchema = z.object({
 });
 
 // TODO: move to types
-type CardProps = React.ComponentProps<typeof Card> & {
+type TransactionDialogProps = React.ComponentProps<typeof Dialog> & {
 	transaction?: z.infer<typeof transactionSchema>;
 };
 
-export function TransactionForm({
-	transaction,
-	className,
-	...props
-}: CardProps) {
+export function TransactionDialogForm({ transaction }: TransactionDialogProps) {
 	const isEditing = !!transaction;
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof transactionSchema>>({
 		resolver: zodResolver(transactionSchema),
@@ -65,20 +67,24 @@ export function TransactionForm({
 	function onSubmit(values: z.infer<typeof transactionSchema>) {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
-		console.log(values);
+		router.post(
+			route("transaction.store"),
+			{ ...values },
+			{ onSuccess: () => setIsDialogOpen(false) },
+		);
 	}
 
-	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
-
 	return (
-		<Card
-			className={cn("w-xl shadow-md dark:border-primary-foreground", className)}
-			{...props}
-		>
-			<CardHeader>
-				<CardTitle>{isEditing ? "Edit" : "Create"} Transaction</CardTitle>
-			</CardHeader>
-			<CardContent>
+		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+			<DialogTrigger asChild>
+				<Button className="w-full">
+					<Plus className="mr-2 h-4 w-4" /> Add
+				</Button>
+			</DialogTrigger>
+			<DialogContent className="text-primary sm:max-w-md">
+				<DialogHeader>
+					<DialogTitle>Add new transaction</DialogTitle>
+				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 						<FormField
@@ -161,13 +167,17 @@ export function TransactionForm({
 							)}
 						/>
 						<div>Here will live upload button for fotos</div>
-
-						<CardFooter className="flex items-center justify-end">
+						<DialogFooter>
+							<DialogClose asChild>
+								<Button type="button" variant="secondary">
+									Close
+								</Button>
+							</DialogClose>
 							<Button type="submit">{isEditing ? "Edit" : "Add"}</Button>
-						</CardFooter>
+						</DialogFooter>
 					</form>
 				</Form>
-			</CardContent>
-		</Card>
+			</DialogContent>
+		</Dialog>
 	);
 }
