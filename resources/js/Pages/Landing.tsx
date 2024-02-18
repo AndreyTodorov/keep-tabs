@@ -12,7 +12,7 @@ interface UserShort {
 export interface TransactionShort {
 	id: string;
 	date: string;
-	description: string;
+	comment: string;
 	amount: string;
 	user: UserShort;
 }

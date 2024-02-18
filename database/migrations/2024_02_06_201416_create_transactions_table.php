@@ -33,7 +33,6 @@ return new class extends Migration
             $table->date('date')->nullable(false);
             $table->decimal('amount')->nullable(false);
             $table->string('comment', 200);
-            $table->string('description', 200);
 
             // Timestamps
             $table->softDeletes();

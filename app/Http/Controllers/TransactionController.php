@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tab;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class TransactionController extends Controller
 {
@@ -26,9 +28,22 @@ class TransactionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, Tab $tab)
     {
-        //
+        $validated = $request->validate([
+            'amount' => 'required|decimal:2',
+            'date' => 'date',
+            'comment' => 'string|max:100'
+        ]);
+        $creatorID = $request->user()->id;
+
+        $transaction = new Transaction($validated);
+        $transaction->user()->associate($creatorID);
+        $transaction->tab()->associate($tab);
+        $transaction->save();
+
+        // TODO: redirect to single tab page
+        return Redirect::route('home');
     }
 
     /**

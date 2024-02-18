@@ -39,15 +39,18 @@ const transactionSchema = z.object({
 	date: z.date(),
 	amount: z.string(),
 	comment: z.string().max(200),
-	description: z.string().max(200),
 });
 
 // TODO: move to types
 type TransactionDialogProps = React.ComponentProps<typeof Dialog> & {
 	transaction?: z.infer<typeof transactionSchema>;
+	tabID?: string;
 };
 
-export function TransactionDialogForm({ transaction }: TransactionDialogProps) {
+export function TransactionDialogForm({
+	transaction,
+	tabID,
+}: TransactionDialogProps) {
 	const isEditing = !!transaction;
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -59,7 +62,6 @@ export function TransactionDialogForm({ transaction }: TransactionDialogProps) {
 			date: dayjs().toDate(),
 			amount: "",
 			comment: "",
-			description: "",
 		},
 	});
 
@@ -68,14 +70,25 @@ export function TransactionDialogForm({ transaction }: TransactionDialogProps) {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		router.post(
-			route("transaction.store"),
-			{ ...values },
-			{ onSuccess: () => setIsDialogOpen(false) },
+			route("transaction.store", { tab: tabID }),
+			{ ...values, date: dayjs(values.date).endOf("day").toDate() },
+			{
+				onSuccess: () => setIsDialogOpen(false),
+				onError: (err) => console.log(err),
+			},
 		);
 	}
 
+	console.log(form.watch("date"), form.watch("amount"));
+
 	return (
-		<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+		<Dialog
+			open={isDialogOpen}
+			onOpenChange={(open) => {
+				form.reset();
+				setIsDialogOpen(open);
+			}}
+		>
 			<DialogTrigger asChild>
 				<Button className="w-full">
 					<Plus className="mr-2 h-4 w-4" /> Add
@@ -139,7 +152,7 @@ export function TransactionDialogForm({ transaction }: TransactionDialogProps) {
 													setIsPopoverOpen(false);
 												}}
 												disabled={(date) =>
-													date > new Date() || date < new Date("1900-01-01")
+													date > new Date() || date < new Date("2024-01-01")
 												}
 												initialFocus
 											/>

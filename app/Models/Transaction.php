@@ -25,12 +25,21 @@ class Transaction extends Model
      *
      * @var array<int, string>
      */
-    // protected $hidden = [
-    //     'created_at',
-    //     'deleted_at',
-    //     'updated_at',
-    //     'tab_id',
-    // ];
+    protected $hidden = [
+        'created_at',
+        'deleted_at',
+        'updated_at',
+        'tab_id',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'date' => 'datetime:d.m.Y',
+    ];
 
     /**
      * The attributes that are mass assignable.

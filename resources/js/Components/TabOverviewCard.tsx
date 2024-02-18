@@ -31,7 +31,7 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 			</CardHeader>
 			<CardContent>
 				<div>
-					{tab.transactions.reverse().map((transaction, index) => (
+					{tab.transactions.toReversed().map((transaction, index) => (
 						<div
 							key={index}
 							className="mb-3 flex items-center justify-end gap-2 pb-4 last:mb-0 last:pb-0"
@@ -49,11 +49,11 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 										{transaction.date}
 									</p>
 									<p className="text-xs text-muted-foreground">
-										{transaction.description}
+										{transaction.comment}
 									</p>
 								</div>
 							</div>
-							<div className="w-1/4 pl-2 text-lg">{transaction.amount} лв</div>
+							<div className="w-1/4 pl-2">{transaction.amount} лв</div>
 						</div>
 					))}
 					<div>Summary</div>
@@ -61,7 +61,7 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 			</CardContent>
 			<CardFooter className="flex gap-1">
 				{/* TODO: buttons links */}
-				<TransactionDialogForm />
+				<TransactionDialogForm tabID={tab.id} />
 				<Button variant="outline" className="w-full">
 					Details
 				</Button>

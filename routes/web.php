@@ -2,9 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TabController;
-use App\Models\Tab;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,7 +23,8 @@ Route::get('/', function () {
 			$query
 				->with('user:id,name')
 				->orderBy('date', 'desc')
-				->limit(3);
+				->orderByDesc('created_at', 'desc')
+				->limit(7);
 		}])
 		->with('users:id,name')
 		->get();
@@ -47,6 +46,10 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
 	Route::post('/tab', [TabController::class, 'store'])->name('tab.store');
+});
+
+Route::middleware('auth')->group(function () {
+	Route::post('/transaction/{tab}', [TransactionController::class, 'store'])->name('transaction.store');
 });
 
 require __DIR__ . '/auth.php';

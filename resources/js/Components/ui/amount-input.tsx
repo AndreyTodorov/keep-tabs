@@ -37,6 +37,8 @@ const AmountInput = React.forwardRef<HTMLInputElement, InputProps>(
 				e.target.value = "0";
 			} else if (e.target.value.endsWith(".")) {
 				e.target.value = e.target.value.replace(/[.]/g, ".00");
+			} else if (!e.target.value.includes(".") && e.target.value) {
+				e.target.value = e.target.value.concat(".00");
 			}
 
 			if (onChange) onChange(e);

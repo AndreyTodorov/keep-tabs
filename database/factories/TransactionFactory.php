@@ -21,7 +21,6 @@ class TransactionFactory extends Factory
             'date' => fake()->dateTimeBetween('-2 week', 'now'),
             'amount' => fake()->randomFloat(12, 5, 70),
             'comment' => fake()->sentence(),
-            'description' => fake()->sentence(),
             'user_id' => 1,
             'tab_id' => 1,
         ];
