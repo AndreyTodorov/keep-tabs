@@ -2,6 +2,7 @@ import AuthenticatedLayout from "@/Layouts/Authenticated";
 import { type PageProps } from "@/types";
 import { TabOverviewCard } from "@/Components/TabOverviewCard";
 import { TabCreateDialog } from "@/Components/Forms/TabCreate";
+import { Head } from "@inertiajs/react";
 
 export interface TransactionShort {
 	id: string;
@@ -25,9 +26,9 @@ interface LandingProps extends PageProps {
 export default function Landing({ auth, tabs }: LandingProps) {
 	return (
 		<AuthenticatedLayout user={auth.user}>
-			<div className="pl-6 pt-6">
-				{/* // TODO: open modal form for new tab */}
+			<Head title="Welcome" />
 
+			<div className="pl-6 pt-6">
 				<TabCreateDialog />
 			</div>
 			<div className="flex items-center justify-center gap-3 p-6">
