@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TabController;
 use App\Models\Tab;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -19,10 +20,16 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-	$user = Auth::user();
-	$tabsWithTransactions = Tab::whereHas('users', function ($query) use ($user) {
-		$query->where('users.id', $user->id);
-	})->with('transactions')->get();
+	$tabsWithTransactions = request()->user()->tabs()
+		->with(['transactions' => function ($query) {
+			$query
+				->with('user:id,name')
+				->orderBy('date', 'desc')
+				->limit(3);
+		}])
+		->with('users:id,name')
+		->get();
+
 
 	return Inertia::render('Landing', [
 		'tabs' => $tabsWithTransactions

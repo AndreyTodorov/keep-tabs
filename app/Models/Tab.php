@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Tab extends Model
 {
     use HasUlids, SoftDeletes, HasFactory;
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
     const STATUS_ACTIVE = 'active';
     const STATUS_PENDING = 'pending';

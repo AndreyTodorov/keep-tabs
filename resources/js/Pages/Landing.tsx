@@ -4,19 +4,25 @@ import { TabOverviewCard } from "@/Components/TabOverviewCard";
 import { TabCreateDialog } from "@/Components/Forms/TabCreate";
 import { Head } from "@inertiajs/react";
 
+// TODO: move to types
+interface UserShort {
+	id: number;
+	name: string;
+}
 export interface TransactionShort {
 	id: string;
 	date: string;
 	description: string;
-	amount: number;
-	user: string;
+	amount: string;
+	user: UserShort;
 }
 
 export interface TabOverview {
 	id: string;
 	name: string;
 	description: string;
-	lastTransactions: TransactionShort[];
+	transactions: TransactionShort[];
+	users: UserShort[];
 }
 
 interface LandingProps extends PageProps {

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Transaction extends Model
 {
     use HasUlids, SoftDeletes, HasFactory;
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
     /**
      * The data type of the auto-incrementing ID.
@@ -18,6 +19,18 @@ class Transaction extends Model
      * @var string
      */
     protected $keyType = 'string';
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    // protected $hidden = [
+    //     'created_at',
+    //     'deleted_at',
+    //     'updated_at',
+    //     'tab_id',
+    // ];
 
     /**
      * The attributes that are mass assignable.

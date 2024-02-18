@@ -28,23 +28,26 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 			</CardHeader>
 			<CardContent>
 				<div>
-					{tab.lastTransactions?.map((transaction, index) => (
+					{tab.transactions?.map((transaction, index) => (
 						<div
 							key={index}
-							className="mb-3 flex items-start justify-end gap-2 pb-4 last:mb-0 last:pb-0"
+							className="mb-3 flex items-center justify-end gap-2 pb-4 last:mb-0 last:pb-0"
 						>
 							<div className="flex w-full items-center gap-4">
-								<span className="flex h-2 w-2 rounded-full bg-sky-500" />
+								<div className="w-4">
+									<span className="flex h-2 w-2 rounded-full bg-sky-500" />
+								</div>
+
 								<div className="space-y-1">
 									<p className="text-sm font-medium leading-none">
-										{transaction.user}: {transaction.amount} лв
+										{transaction.user.name}: {transaction.amount} лв
 									</p>
-									<p className="text-sm text-muted-foreground">
+									<p className="text-xs text-muted-foreground">
 										{transaction.description}
 									</p>
 								</div>
 							</div>
-							<div className="text-sm text-muted-foreground">
+							<div className="flex w-full justify-end text-sm text-muted-foreground">
 								{transaction.date}
 							</div>
 						</div>

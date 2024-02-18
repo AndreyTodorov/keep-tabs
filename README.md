@@ -22,4 +22,6 @@
 
    - [ ] add "create/edit Transaction modal"
 
-4. [ ] Add React Query
+4. add error message on login
+
+5. [ ] Add React Query
