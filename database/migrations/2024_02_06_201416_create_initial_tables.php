@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Tab;
+use App\Models\Transaction;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->date('date')->nullable(false);
             $table->decimal('amount')->nullable(false);
             $table->string('comment', 200);
+            $table->enum('action', [Transaction::ACTION_ADDITION, Transaction::ACTION_CORRECTION])->default(Transaction::ACTION_ADDITION);
 
             // Timestamps
             $table->softDeletes();
@@ -45,11 +47,20 @@ return new class extends Migration
         // Join table
         Schema::create('tab_user', function (Blueprint $table) {
             $table->uuid('id')->primary()->default(DB::raw('(UUID())'));
-            $table->foreignId('user_id')->constrained();
-            $table->foreignUlid('tab_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('tab_id')->constrained()->cascadeOnDelete();
 
             // Timestamps
             $table->timestamps();
+        });
+
+        Schema::create('transaction_summaries', function (Blueprint $table) {
+            $table->id('id');
+            $table->string('year_month')->nullable(false);
+            $table->decimal('amount')->nullable(false);
+            $table->decimal('balance')->nullable(true);
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignUlid('tab_id')->constrained()->cascadeOnDelete();
         });
     }
 
@@ -60,5 +71,7 @@ return new class extends Migration
     {
         Schema::dropIfExists('transactions');
         Schema::dropIfExists('tabs');
+        Schema::dropIfExists('tab_user');
+        Schema::dropIfExists('transactions_summary');
     }
 };

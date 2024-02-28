@@ -79,8 +79,6 @@ export function TransactionDialogForm({
 		);
 	}
 
-	console.log(form.watch("date"), form.watch("amount"));
-
 	return (
 		<Dialog
 			open={isDialogOpen}

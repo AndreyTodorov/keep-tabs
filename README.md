@@ -12,16 +12,23 @@
      - [ ] current balance
    - [ ] page to view single TAB
 
-2. [ ] Seeders
+2. [x] Seeders
 
-   1. [ ] users
-   2. [ ] tabs
-   3. [ ] transactions
+   1. [x] users
+   2. [x] tabs
+   3. [x] transactions
 
-3. [ ] Add new Transaction to a TAB
+3. [ ] add cronjon to update the current months balance and amount
+4. [ ] Add new Transaction to a TAB
 
-   - [ ] add "create/edit Transaction modal"
+   - [x] add "create/edit Transaction modal"
+   - [x] add Types to transactions: addition,correction
+   - [ ] on delete:
+     - [ ] set the current field deleted_at
+     - [ ] Create new transaction with action correction
+   - [ ] Add rebalance button
+   - [ ] Add categories such as: Food, Bills, Rebalance
 
-4. add error message on login
+5. add error messages for BE errors on inertia
 
-5. [ ] Add React Query
+6. [ ] Add React Query

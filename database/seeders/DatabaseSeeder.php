@@ -57,38 +57,39 @@ class DatabaseSeeder extends Seeder
 				'creator_id' => $andrey->id,
 			]);
 
+		$transactionCount = 200;
 		// Transactions
 		Transaction::factory()
 			->for($sonyaTab1, 'tab')
 			->for($sonya, 'user')
-			->count(10)
+			->count($transactionCount)
 			->create();
 		Transaction::factory()
 			->for($sonyaTab1, 'tab')
 			->for($andrey, 'user')
-			->count(10)
+			->count($transactionCount)
 			->create();
 
 		Transaction::factory()
 			->for($sonyaTab2, 'tab')
 			->for($sonya, 'user')
-			->count(10)
+			->count($transactionCount)
 			->create();
 		Transaction::factory()
 			->for($sonyaTab2, 'tab')
 			->for($andrey, 'user')
-			->count(10)
+			->count($transactionCount)
 			->create();
 
 		Transaction::factory()
 			->for($andreyTab1, 'tab')
 			->for($sonya, 'user')
-			->count(10)
+			->count($transactionCount)
 			->create();
 		Transaction::factory()
 			->for($andreyTab1, 'tab')
 			->for($andrey, 'user')
-			->count(10)
+			->count($transactionCount)
 			->create();
 	}
 }

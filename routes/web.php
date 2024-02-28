@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TabController;
 use App\Http\Controllers\TransactionController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,19 +19,35 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+	// TODO: select only what's needed
 	$tabsWithTransactions = request()->user()->tabs()
-		->with(['transactions' => function ($query) {
-			$query
-				->with('user:id,name')
-				->orderBy('date', 'desc')
-				->orderByDesc('created_at', 'desc')
-				->limit(7);
-		}])
-		->with('users:id,name')
+		->with([
+			'transactions' => function ($query) {
+				$query
+					->with('user:id,name')
+					->orderBy('date', 'desc')
+					->orderByDesc('created_at', 'desc')
+					->limit(3);
+			},
+			'users:id,name',
+			'transaction_summaries' => function ($query) {
+				$newest_summaries = DB::table('transaction_summaries')
+					->select(DB::raw('MAX(id) as id'))
+					->groupBy('tab_id', 'user_id');
+
+				$query
+					->with('user:id,name')
+					->joinSub($newest_summaries, 'newest_summaries', function ($join) {
+						$join->on('transaction_summaries.id', '=', 'newest_summaries.id');
+					});
+			}
+		])
 		->get();
 
+	// TODO: include current months transactions
+
 	return Inertia::render('Landing', [
-		'tabs' => $tabsWithTransactions
+		'tabs' => $tabsWithTransactions,
 	]);
 })->middleware(['auth', 'verified'])->name('home');
 

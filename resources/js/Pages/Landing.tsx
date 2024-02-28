@@ -17,11 +17,22 @@ export interface TransactionShort {
 	user: UserShort;
 }
 
+export interface TransactionSummary {
+	amount: string;
+	balance: string;
+	id: number;
+	tab_id: string;
+	user: { id: number; name: string };
+	user_id: number;
+	year_month: string;
+}
+
 export interface TabOverview {
 	id: string;
 	name: string;
 	description: string;
 	transactions: TransactionShort[];
+	transaction_summaries: TransactionSummary[];
 	users: UserShort[];
 }
 
@@ -43,7 +54,7 @@ export default function Landing({ auth, tabs }: LandingProps) {
 				}
 			>
 				{tabs.map((tab) => (
-					<TabOverviewCard key={tab.id} tab={tab} />
+					<TabOverviewCard key={tab.id} tab={tab} currentUser={auth.user} />
 				))}
 			</div>
 		</AuthenticatedLayout>

@@ -40,4 +40,9 @@ class Tab extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function transaction_summaries(): HasMany
+    {
+        return $this->hasMany(TransactionSummary::class);
+    }
 }

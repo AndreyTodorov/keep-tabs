@@ -57,4 +57,9 @@ class User extends Authenticatable
 	{
 		return $this->BelongsToMany(Tab::class);
 	}
+
+	public function transaction_summaries(): HasMany
+	{
+		return $this->hasMany(TransactionSummary::class);
+	}
 }

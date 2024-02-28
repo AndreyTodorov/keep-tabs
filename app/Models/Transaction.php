@@ -13,6 +13,9 @@ class Transaction extends Model
     use HasUlids, SoftDeletes, HasFactory;
     use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
 
+    const ACTION_ADDITION = 'addition';
+    const ACTION_CORRECTION = 'correction';
+
     /**
      * The data type of the auto-incrementing ID.
      *
