@@ -54,7 +54,7 @@ export default function Landing({ auth, tabs }: LandingProps) {
 				}
 			>
 				{tabs.map((tab) => (
-					<TabOverviewCard key={tab.id} tab={tab} currentUser={auth.user} />
+					<TabOverviewCard key={tab.id} tab={tab} />
 				))}
 			</div>
 		</AuthenticatedLayout>

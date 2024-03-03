@@ -31,9 +31,9 @@ class TransactionController extends Controller
     public function store(Request $request, Tab $tab)
     {
         $validated = $request->validate([
-            'amount' => 'required|decimal:2',
-            'date' => 'date',
-            'comment' => 'string|max:100'
+            'amount' => 'required|decimal:2|gt:0',
+            'date' => 'required|date',
+            'comment' => 'string|max:1|nullable'
         ]);
         $creatorID = $request->user()->id;
 

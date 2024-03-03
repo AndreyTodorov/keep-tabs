@@ -8,60 +8,89 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/Components/ui/card";
-import { type TabOverview } from "@/Pages/Landing";
+import { type TransactionShort, type TabOverview } from "@/Pages/Landing";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { TransactionDialogForm } from "./Forms/Transaction";
-import { type User } from "@/types";
+import { useMemo } from "react";
 
 type CardProps = React.ComponentProps<typeof Card> & {
 	tab: TabOverview;
-	currentUser: User;
 };
 
-export function TabOverviewCard({
-	tab,
-	currentUser,
-	className,
-	...props
-}: CardProps) {
-	// TODO: order the guests by current user and then all others
-	// TODO: show relative balance 1 -> 2 = -22 red, 2 -> 1 = +22 green
+type UserBalanceMap = { [userID: number]: number };
+
+function calculateUserBalances(
+	transactions: TransactionShort[],
+): UserBalanceMap {
+	const userBalances: UserBalanceMap = {};
+
+	transactions.forEach((transaction) => {
+		const {
+			user: { id: userID },
+			amount,
+		} = transaction;
+
+		// If the user is not in the map, initialize their balance to 0
+		if (!userBalances[userID]) {
+			userBalances[userID] = 0;
+		}
+
+		// Update the user's balance with the transaction amount
+		userBalances[userID] += parseFloat(amount);
+	});
+
+	return userBalances;
+}
+
+export function TabOverviewCard({ tab, className, ...props }: CardProps) {
+	const currentMonthSummary = useMemo(
+		() => calculateUserBalances(tab.transactions),
+		[tab],
+	);
 
 	const sortedSummaries = tab.transaction_summaries
-		.sort((a, b) => parseFloat(b.balance) - parseFloat(a.balance))
+		.map((summary) => {
+			const balanceAndCurrent =
+				parseFloat(summary.balance) +
+				(currentMonthSummary[summary.user_id] ?? 0);
+			const balance =
+				Math.round((balanceAndCurrent + Number.EPSILON) * 100) / 100;
+			return {
+				...summary,
+				balance,
+			};
+		})
+		.sort((a, b) => b.balance - a.balance)
 		.map((summary, index, summaries) => {
 			const diff =
-				index === 0
-					? 0
-					: parseFloat(summaries[index - 1].balance) -
-						parseFloat(summary.balance);
-			const rounded = Math.round((diff + Number.EPSILON) * 100) / 100;
+				index === 0 ? 0 : summaries[index - 1].balance - summary.balance;
+			const roundedDiff = Math.round((diff + Number.EPSILON) * 100) / 100;
 
 			return {
 				balance: summary.balance,
 				userID: summary.user_id,
 				name: summary.user.name,
-				diff: rounded,
+				diff: roundedDiff,
 			};
 		});
-
-	console.log(currentUser);
 
 	return (
 		<Card
 			className={cn(
-				"max-w-screen dark:border-primary-foreground md:w-[400px]",
+				"max-w-screen flex h-[500px] flex-col justify-between dark:border-primary-foreground md:w-[400px]",
 				className,
 			)}
 			{...props}
 		>
-			<CardHeader>
+			<CardHeader className="dark:border-b-1">
 				<CardTitle>{tab.name}</CardTitle>
 				<CardDescription>{tab.description}</CardDescription>
 			</CardHeader>
 			<CardContent>
-				<div>
-					{tab.transactions.toReversed().map((transaction, index) => (
+				{tab.transactions
+					.toReversed()
+					.slice(-3)
+					.map((transaction, index) => (
 						<div
 							key={index}
 							className="mb-3 flex items-center justify-end gap-2 pb-4 last:mb-0 last:pb-0"
@@ -84,29 +113,33 @@ export function TabOverviewCard({
 							<div className="w-1/4 pl-2">{transaction.amount} лв</div>
 						</div>
 					))}
-					<div className="flex w-full items-center justify-between">
-						{sortedSummaries.map((summary) => {
-							return (
-								<div
-									key={`${summary.userID}`}
-									className="flex w-full flex-col items-center gap-2"
-								>
-									<span>{summary.name}</span>
-									<span>{summary.balance}</span>
-									<span>{summary.diff}</span>
-								</div>
-							);
-						})}
-						<div></div>
-					</div>
-				</div>
 			</CardContent>
-			<CardFooter className="flex gap-1">
+			<CardFooter className="flex flex-col gap-2">
+				<div className="flex w-full font-semibold">
+					{sortedSummaries.map((summary) => {
+						return !!summary.diff ? (
+							<div key={`${summary.userID}`} className="w-full pt-4">
+								{!!summary.diff && (
+									<>
+										<span>
+											{summary.name} Owes:{" "}
+											<span className="text-lg text-red-500">
+												{summary.diff} лв
+											</span>
+										</span>
+									</>
+								)}
+							</div>
+						) : null;
+					})}
+				</div>
 				{/* TODO: buttons links */}
-				<TransactionDialogForm tabID={tab.id} />
-				<Button variant="outline" className="w-full">
-					Details
-				</Button>
+				<div className="flex w-full gap-2">
+					<TransactionDialogForm tabID={tab.id} />
+					<Button variant="outline" className="w-full">
+						Details
+					</Button>
+				</div>
 			</CardFooter>
 		</Card>
 	);

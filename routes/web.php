@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TabController;
 use App\Http\Controllers\TransactionController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -25,9 +26,9 @@ Route::get('/', function () {
 			'transactions' => function ($query) {
 				$query
 					->with('user:id,name')
+					->where('transactions.created_at', '>=', Carbon::now()->startOfMonth())
 					->orderBy('date', 'desc')
-					->orderByDesc('created_at', 'desc')
-					->limit(3);
+					->orderByDesc('created_at', 'desc');
 			},
 			'users:id,name',
 			'transaction_summaries' => function ($query) {
@@ -43,8 +44,6 @@ Route::get('/', function () {
 			}
 		])
 		->get();
-
-	// TODO: include current months transactions
 
 	return Inertia::render('Landing', [
 		'tabs' => $tabsWithTransactions,

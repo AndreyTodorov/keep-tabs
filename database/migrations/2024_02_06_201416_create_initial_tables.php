@@ -33,7 +33,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             $table->date('date')->nullable(false);
             $table->decimal('amount')->nullable(false);
-            $table->string('comment', 200);
+            $table->string('comment', 200)->nullable();
             $table->enum('action', [Transaction::ACTION_ADDITION, Transaction::ACTION_CORRECTION])->default(Transaction::ACTION_ADDITION);
 
             // Timestamps

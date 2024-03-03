@@ -34,11 +34,12 @@ import {
 } from "@/Components/ui/dialog";
 import AmountInput from "../ui/amount-input";
 import { router } from "@inertiajs/react";
+import { toast } from "sonner";
 
 const transactionSchema = z.object({
 	date: z.date(),
 	amount: z.string(),
-	comment: z.string().max(200),
+	comment: z.string().max(200).nullable(),
 });
 
 // TODO: move to types
@@ -67,14 +68,25 @@ export function TransactionDialogForm({
 
 	// 2. Define a submit handler.
 	function onSubmit(values: z.infer<typeof transactionSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
 		router.post(
 			route("transaction.store", { tab: tabID }),
-			{ ...values, date: dayjs(values.date).endOf("day").toDate() },
+			{ ...values, date: values.date.toISOString() },
 			{
-				onSuccess: () => setIsDialogOpen(false),
-				onError: (err) => console.log(err),
+				onSuccess: () => {
+					toast.success("Transaction has been added.");
+					setIsDialogOpen(false);
+				},
+				onError: (err) => {
+					toast.error("An error occured!", {
+						description: (
+							<div className="flex flex-col gap-2">
+								{Object.values(err).map((val, index) => (
+									<span key={index}>{val}</span>
+								))}
+							</div>
+						),
+					});
+				},
 			},
 		);
 	}
@@ -171,6 +183,7 @@ export function TransactionDialogForm({
 											placeholder="Some description"
 											className="resize-none"
 											{...field}
+											value={field.value ?? ""}
 										/>
 									</FormControl>
 									<FormMessage />

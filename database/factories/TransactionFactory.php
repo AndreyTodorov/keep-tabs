@@ -17,8 +17,10 @@ class TransactionFactory extends Factory
      */
     public function definition(): array
     {
+        $transactionDate = fake()->dateTimeBetween('-1 year', 'now');
         return [
-            'date' => fake()->dateTimeBetween('-1 year', 'now'),
+            'date' => $transactionDate,
+            'created_at' => $transactionDate,
             'amount' => fake()->randomFloat(12, 5, 70),
             'comment' => fake()->sentence(),
             'action' => Tab::STATUS_ACTIVE,

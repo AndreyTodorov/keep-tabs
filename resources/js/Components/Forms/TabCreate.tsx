@@ -26,6 +26,7 @@ import {
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const tabCreateSchema = z.object({
 	name: z.string().max(50),
@@ -47,7 +48,24 @@ export function TabCreateDialog() {
 		router.post(
 			route("tab.store"),
 			{ ...values, user_id: 2 }, // TODO: add dropdown with emails search
-			{ onSuccess: () => setOpen(false) },
+			{
+				onSuccess: () => {
+					toast.success("Tab has been created.");
+					setOpen(false);
+					form.reset();
+				},
+				onError: (err) => {
+					toast.error("An error occured!", {
+						description: (
+							<div className="flex flex-col gap-2">
+								{Object.values(err).map((val, index) => (
+									<span key={index}>{val}</span>
+								))}
+							</div>
+						),
+					});
+				},
+			},
 		);
 	}
 

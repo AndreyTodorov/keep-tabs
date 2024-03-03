@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ThemeProvider } from "./Components/Theme/theme-provider";
+import { Toaster } from "@/Components/ui/sonner";
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const appName = import.meta.env.VITE_APP_NAME || "Keep Tabs";
@@ -22,6 +23,7 @@ void createInertiaApp({
 		root.render(
 			<ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
 				<App {...props} />
+				<Toaster position="top-center" richColors />
 			</ThemeProvider>,
 		);
 	},
