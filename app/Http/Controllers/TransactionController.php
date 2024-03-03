@@ -33,7 +33,7 @@ class TransactionController extends Controller
         $validated = $request->validate([
             'amount' => 'required|decimal:2|gt:0',
             'date' => 'required|date',
-            'comment' => 'string|max:1|nullable'
+            'comment' => 'string|max:200'
         ]);
         $creatorID = $request->user()->id;
 
