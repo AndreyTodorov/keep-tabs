@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -32,6 +33,9 @@ class User extends Authenticatable
 	protected $hidden = [
 		'password',
 		'remember_token',
+		'email_verified_at',
+		'created_at',
+		'updated_at',
 	];
 
 	/**
@@ -49,8 +53,13 @@ class User extends Authenticatable
 		return $this->hasMany(Transaction::class);
 	}
 
-	public function tabs(): HasMany
+	public function tabs(): BelongsToMany
 	{
-		return $this->hasMany(Tab::class);
+		return $this->BelongsToMany(Tab::class);
+	}
+
+	public function transaction_summaries(): HasMany
+	{
+		return $this->hasMany(TransactionSummary::class);
 	}
 }

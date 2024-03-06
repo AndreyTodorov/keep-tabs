@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
-    use HasUlids;
-    use SoftDeletes;
+    use HasUlids, SoftDeletes, HasFactory;
+    use \Staudenmeir\EloquentEagerLimit\HasEagerLimit;
+
+    const ACTION_ADDITION = 'addition';
+    const ACTION_CORRECTION = 'correction';
 
     /**
      * The data type of the auto-incrementing ID.
@@ -18,6 +22,34 @@ class Transaction extends Model
      * @var string
      */
     protected $keyType = 'string';
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'deleted_at',
+        'updated_at',
+        'tab_id',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'date' => 'datetime:d.m.Y',
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['date', 'amount', 'comment', 'description'];
 
     public function user(): BelongsTo
     {

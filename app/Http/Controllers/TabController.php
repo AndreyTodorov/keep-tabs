@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tab;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class TabController extends Controller
 {
@@ -28,7 +29,21 @@ class TabController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:50',
+            'description' => 'string|max:200',
+            'user_id' => 'exists:App\Models\User,id'
+        ]);
+        $creatorUserID = $request->user()->id;
+
+        $newTab = new Tab($validated);
+        $newTab->creator_id = $creatorUserID;
+        $newTab->save();
+
+        $newTab->users()->attach([$creatorUserID, $validated['user_id']]);
+
+        // TODO: redirect to single tab page
+        return Redirect::route('home');
     }
 
     /**

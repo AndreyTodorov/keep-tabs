@@ -20,7 +20,7 @@ const config = {
 	parserOptions: {
 		project: path.join(__dirname, "tsconfig.json"),
 	},
-	plugins: ["@typescript-eslint", "react", "react-hooks"],
+	plugins: ["@typescript-eslint", "react", "react-hooks", "@tanstack/query"],
 	extends: [
 		"plugin:@typescript-eslint/recommended", // Uses the recommended rules from the @typescript-eslint/eslint-plugin
 		"plugin:react/recommended",
@@ -50,6 +50,8 @@ const config = {
 				},
 			},
 		],
+		"@tanstack/query/exhaustive-deps": "error",
+		"@tanstack/query/stable-query-client": "error",
 	},
 	settings: {
 		react: {
