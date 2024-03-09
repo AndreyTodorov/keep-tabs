@@ -1,0 +1,102 @@
+version: "3.9"
+
+networks:
+    laravel:
+        driver: bridge
+
+volumes:
+    mysql:
+
+services:
+    nginx:
+        image: nginx:stable-alpine
+        container_name: nginx
+        restart: unless-stopped
+        depends_on:
+            - php
+            - mysql
+            - yarn
+        ports:
+            - 8080:80
+            - 443:443
+        volumes:
+            - .:/var/www/html
+            - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - laravel
+
+    mysql:
+        image: mysql:8.0
+        container_name: mysql
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: db
+            # So you don't have to use root, but you can if you like
+            MYSQL_USER: andrey
+            # You can use whatever password you like
+            MYSQL_PASSWORD: kp&Y*93n8LLpu%o%
+            # Password for root access
+            MYSQL_ROOT_PASSWORD: xwZD9m6^Harsmj
+        networks:
+            - laravel
+        volumes:
+            - mysql:/var/lib/mysql
+
+    php:
+        build:
+            context: .docker/php
+            dockerfile: Dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
+        container_name: php
+        volumes:
+            - .:/var/www/html
+        networks:
+            - laravel
+        entrypoint: ["composer", "setup"]
+        depends_on: 
+            - yarn
+            - mysql
+
+    composer:
+        image: composer:latest
+        container_name: composer
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - php
+        entrypoint: ["composer", "--ignore-platform-reqs"]
+        networks:
+            - laravel
+
+    yarn:
+        image: node:current-alpine
+        volumes:
+            - .:/var/www/html
+        working_dir: /var/www/html
+        entrypoint: ["yarn", "run", "dev"]
+        networks:
+            - laravel 
+        ports:
+          - 5173:5173
+
+    artisan:
+        build:
+            context: .docker/php
+            dockerfile: Dockerfile
+            args:
+                - UID=${UID:-1000}
+                - GID=${GID:-1000}
+        container_name: artisan
+        volumes:
+            - .:/var/www/html
+        depends_on:
+            - mysql
+        entrypoint: ["php", "/var/www/html/artisan"]
+        networks:
+            - laravel
+        
