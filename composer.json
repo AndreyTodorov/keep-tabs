@@ -59,8 +59,7 @@
             "php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
             "php artisan key:generate",
             "php artisan config:cache",
-            "php artisan migrate:fresh --seed",
-						"php-fpm -y /usr/local/etc/php-fpm.conf -R"
+            "php artisan migrate:fresh --seed"
         ]
 	},
 	"extra": {

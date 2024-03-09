@@ -57,28 +57,17 @@ services:
             - .:/var/www/html
         networks:
             - laravel
-        entrypoint: ["composer", "setup"]
         depends_on: 
             - yarn
             - mysql
 
-    composer:
-        image: composer:latest
-        container_name: composer
-        volumes:
-            - .:/var/www/html
-        depends_on:
-            - php
-        entrypoint: ["composer", "--ignore-platform-reqs"]
-        networks:
-            - laravel
-
     yarn:
-        image: node:current-alpine
+        build:
+            context: .docker/node
+            dockerfile: Dockerfile
         volumes:
             - .:/var/www/html
         working_dir: /var/www/html
-        entrypoint: ["yarn", "run", "dev"]
         networks:
             - laravel 
         ports:

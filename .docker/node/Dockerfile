@@ -1,7 +1,7 @@
 FROM node:20-slim
-RUN npm install -g yarn
 
-COPY package.json .
+WORKDIR /var/www/html
+COPY . .
 
 RUN yarn install
 CMD [ "yarn", "run", "dev" ]

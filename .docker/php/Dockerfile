@@ -5,16 +5,10 @@ ARG GID
 
 ENV UID=${UID}
 ENV GID=${GID}
+ENV COMPOSER_ALLOW_SUPERUSER 1
 
 RUN mkdir -p /var/www/html
 WORKDIR /var/www/html
-
-# # Node.js, NPM, Yarn
-# RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
-# RUN apt-get install -y nodejs
-# RUN npm install npm@latest -g
-# RUN npm install yarn -g
-
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # MacOS staff group's gid is 20, so is the dialout group in alpine linux. We're not using it, let's just remove it.
@@ -36,4 +30,4 @@ RUN mkdir -p /usr/src/php/ext/redis \
 
 USER laravel
 
-# CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
+CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
