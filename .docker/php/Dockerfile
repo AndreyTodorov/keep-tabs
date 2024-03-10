@@ -7,8 +7,7 @@ ENV UID=${UID}
 ENV GID=${GID}
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-RUN mkdir -p /var/www/html
-WORKDIR /var/www/html
+# RUN mkdir -p /var/www/html
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
 # MacOS staff group's gid is 20, so is the dialout group in alpine linux. We're not using it, let's just remove it.
@@ -29,5 +28,6 @@ RUN mkdir -p /usr/src/php/ext/redis \
     && docker-php-ext-install redis
 
 USER laravel
+# WORKDIR /var/www/html
 
 CMD ["php-fpm", "-y", "/usr/local/etc/php-fpm.conf", "-R"]
