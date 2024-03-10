@@ -55,6 +55,7 @@ export function TransactionDialogForm({
 	const isEditing = !!transaction;
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+	const [isPosting, setIsPosting] = useState(false);
 
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof transactionSchema>>({
@@ -72,6 +73,8 @@ export function TransactionDialogForm({
 			route("transaction.store", { tab: tabID }),
 			{ ...values, date: values.date.toISOString() },
 			{
+				onStart: () => setIsPosting(true),
+				onFinish: () => setIsPosting(false),
 				onSuccess: () => {
 					toast.success("Transaction has been added.");
 					setIsDialogOpen(false);
@@ -197,7 +200,9 @@ export function TransactionDialogForm({
 									Close
 								</Button>
 							</DialogClose>
-							<Button type="submit">{isEditing ? "Edit" : "Add"}</Button>
+							<Button disabled={isPosting} type="submit">
+								{isEditing ? "Edit" : "Add"}
+							</Button>
 						</DialogFooter>
 					</form>
 				</Form>
