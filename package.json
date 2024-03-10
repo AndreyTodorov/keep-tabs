@@ -2,7 +2,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-  	"dev": "yarn install && vite --host",
+		"dev": "yarn install && vite --host",
 		"build": "tsc && vite build",
 		"prepare": "husky",
 		"lint:check": "eslint resources/js",
