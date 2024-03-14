@@ -49,7 +49,7 @@ class Transaction extends Model
      *
      * @var array
      */
-    protected $fillable = ['date', 'amount', 'comment', 'description'];
+    protected $fillable = ['date', 'amount', 'comment'];
 
     public function user(): BelongsTo
     {
