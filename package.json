@@ -2,7 +2,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"dev": "yarn install && vite --host",
+		"dev": "pnpm install && vite --host",
 		"build": "tsc && vite build",
 		"prepare": "husky",
 		"lint:check": "eslint resources/js",
@@ -60,7 +60,7 @@
 		"@radix-ui/react-navigation-menu": "^1.1.4",
 		"@radix-ui/react-popover": "^1.0.7",
 		"@radix-ui/react-slot": "^1.0.2",
-		"@tanstack/react-query": "^5.20.5",
+		"@tanstack/react-query": "^5.28.4",
 		"@typescript-eslint/parser": "^6.20.0",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",

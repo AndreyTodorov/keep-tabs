@@ -14,7 +14,7 @@ services:
         restart: unless-stopped
         depends_on:
             - php
-            - yarn
+            - pnpm
         ports:
             - 8080:80
         volumes:
@@ -31,20 +31,22 @@ services:
                 - UID=${UID:-1000}
                 - GID=${GID:-1000}
         container_name: php
+        restart: unless-stopped
+        depends_on:
+            - pnpm
         volumes:
             - .:/var/www/html
         networks:
             - laravel
-        depends_on:
-            - yarn
 
-    yarn:
-        image: node:20-slim
+    pnpm:
+        build:
+            context: .
+            dockerfile: pnpm.Dockerfile
+        container_name: pnpm
         volumes:
             - .:/var/www/html
         networks:
             - laravel
         ports:
             - 5173:5173
-        working_dir: /var/www/html
-        entrypoint: ["yarn", "run", "dev"]
