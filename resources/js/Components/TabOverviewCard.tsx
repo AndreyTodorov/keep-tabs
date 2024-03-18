@@ -8,68 +8,23 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/Components/ui/card";
-import { type TransactionShort, type TabOverview } from "@/Pages/Landing";
+import { type TabOverview } from "@/Pages/Landing";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { TransactionDialogForm } from "./Forms/Transaction";
-import { useMemo } from "react";
 
 type CardProps = React.ComponentProps<typeof Card> & {
 	tab: TabOverview;
 };
 
-type UserBalanceMap = { [userID: number]: number };
-
-function calculateUserBalances(
-	transactions: TransactionShort[],
-): UserBalanceMap {
-	const userBalances: UserBalanceMap = {};
-
-	transactions.forEach((transaction) => {
-		const {
-			user: { id: userID },
-			amount,
-		} = transaction;
-
-		// If the user is not in the map, initialize their balance to 0
-		if (!userBalances[userID]) {
-			userBalances[userID] = 0;
-		}
-
-		// Update the user's balance with the transaction amount
-		userBalances[userID] += parseFloat(amount);
-	});
-
-	return userBalances;
-}
-
 export function TabOverviewCard({ tab, className, ...props }: CardProps) {
-	const currentMonthSummary = useMemo(
-		() => calculateUserBalances(tab.transactions),
-		[tab],
-	);
-
-	const sortedSummaries = tab.transaction_summaries
-		.map((summary) => {
-			const balanceAndCurrent =
-				parseFloat(summary.balance) +
-				(currentMonthSummary[summary.user_id] ?? 0);
-			const balance =
-				Math.round((balanceAndCurrent + Number.EPSILON) * 100) / 100;
-			return {
-				...summary,
-				balance,
-			};
-		})
-		.sort((a, b) => b.balance - a.balance)
+	const sortedBalances = tab.currentBalances
+		.sort((a, b) => b.total - a.total)
 		.map((summary, index, summaries) => {
-			const diff =
-				index === 0 ? 0 : summaries[index - 1].balance - summary.balance;
+			const diff = index === 0 ? 0 : summaries[index - 1].total - summary.total;
 			const roundedDiff = Math.round((diff + Number.EPSILON) * 100) / 100;
 
 			return {
-				balance: summary.balance,
-				userID: summary.user_id,
-				name: summary.user.name,
+				...summary,
 				diff: roundedDiff,
 			};
 		});
@@ -116,13 +71,13 @@ export function TabOverviewCard({ tab, className, ...props }: CardProps) {
 			</CardContent>
 			<CardFooter className="flex flex-col gap-2">
 				<div className="flex w-full font-semibold">
-					{sortedSummaries.map((summary) => {
+					{sortedBalances.map((summary) => {
 						return !!summary.diff ? (
-							<div key={`${summary.userID}`} className="w-full pt-4">
+							<div key={`${summary.user.id}`} className="w-full pt-4">
 								{!!summary.diff && (
 									<>
 										<span>
-											{summary.name} Owes:{" "}
+											{summary.user.name} Owes:{" "}
 											<span className="text-lg text-red-500">
 												{summary.diff} лв
 											</span>

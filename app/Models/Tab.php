@@ -29,7 +29,7 @@ class Tab extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'users'];
 
     public function users(): BelongsToMany
     {

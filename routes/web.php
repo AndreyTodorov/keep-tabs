@@ -23,7 +23,7 @@ Route::get('/', function () {
 	// TODO: select only what's needed
 	$tabsWithTransactions = request()->user()->tabs()
 		->with([
-			'transactions' => function ($query) {
+			'transactions' => function ($query) { // only for the current month
 				$query
 					->with('user:id,name')
 					->where('transactions.created_at', '>=', Carbon::now()->startOfMonth())
@@ -42,11 +42,45 @@ Route::get('/', function () {
 						$join->on('transaction_summaries.id', '=', 'newest_summaries.id');
 					});
 			}
-		])
-		->get();
+		])->get()->toArray();
+
+	foreach ($tabsWithTransactions as $tabIndex => $tab) {
+		$currentBalances = [];
+		foreach ($tab['users'] as $userIndex => $user) {
+			// find current month's transactions sum
+			$currentUserTransactions = array_filter($tab['transactions'], fn ($transaction) => $transaction['user_id'] === $user['id']);
+			$totalTransactionAmount = array_sum(array_column($currentUserTransactions, 'amount'));
+
+			// find summary balance
+			$summaryIndex = array_search($user['id'], array_column($tab['transaction_summaries'], 'user_id'));
+			$userSummaryBalance = $summaryIndex !== false ? $tab['transaction_summaries'][$summaryIndex]['balance'] : 0;
+
+			$currentBalances[] = [
+				'user' => $user,
+				'summaryBalance' => $userSummaryBalance,
+				'transactionsSum' => $totalTransactionAmount,
+				'total' => $userSummaryBalance + $totalTransactionAmount,
+			];
+
+			//TODO: calculate the diff and who owes what
+			$tabsWithTransactions[$tabIndex]['currentBalances'] = $currentBalances;
+		};
+	}
+
+	$tabs = array_map(function ($tab) {
+		return [
+			'id' => $tab['id'],
+			'name' => $tab['name'],
+			'description' => $tab['description'],
+			'creator_id' => $tab['creator_id'],
+			'transactions' => $tab['transactions'],
+			'currentBalances' => $tab['currentBalances'],
+			'users' => $tab['users'],
+		];
+	}, $tabsWithTransactions);
 
 	return Inertia::render('Landing', [
-		'tabs' => $tabsWithTransactions,
+		'tabs' => $tabs,
 	]);
 })->middleware(['auth', 'verified'])->name('home');
 

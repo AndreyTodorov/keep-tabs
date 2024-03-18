@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Tab;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
@@ -31,16 +32,25 @@ class TabController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:50',
-            'description' => 'string|max:200',
-            'user_id' => 'exists:App\Models\User,id'
+            'description' => 'nullable|string|max:200',
+            'users' => 'required|array',
+            'users.*.email' => 'required|email|exists:App\Models\User,email',
         ]);
+
+        // get relevant IDs
         $creatorUserID = $request->user()->id;
+        $userEmails = array_map(fn ($user) => $user['email'], $validated['users']);
+        $userIDs = User::whereIn('email', $userEmails)->pluck('id')->toArray();
 
-        $newTab = new Tab($validated);
+        // create the tab
+        $newTab = new Tab();
         $newTab->creator_id = $creatorUserID;
-        $newTab->save();
+        $newTab->name = $validated['name'];
+        $newTab->description = $validated['description'];
 
-        $newTab->users()->attach([$creatorUserID, $validated['user_id']]);
+        // save and attach users
+        $newTab->save();
+        $newTab->users()->attach([$creatorUserID, ...$userIDs]);
 
         // TODO: redirect to single tab page
         return Redirect::route('home');

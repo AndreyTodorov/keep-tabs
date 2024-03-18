@@ -17,22 +17,20 @@ export interface TransactionShort {
 	user: UserShort;
 }
 
-export interface TransactionSummary {
-	amount: string;
-	balance: string;
-	id: number;
-	tab_id: string;
+export interface CurrentBalance {
 	user: { id: number; name: string };
-	user_id: number;
-	year_month: string;
+	transactionsSum: number;
+	summaryBalance: number;
+	total: number;
 }
 
 export interface TabOverview {
 	id: string;
 	name: string;
 	description: string;
+	creator_id: number;
 	transactions: TransactionShort[];
-	transaction_summaries: TransactionSummary[];
+	currentBalances: CurrentBalance[];
 	users: UserShort[];
 }
 

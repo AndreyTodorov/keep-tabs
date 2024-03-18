@@ -18,7 +18,7 @@ return new class extends Migration
         Schema::create('tabs', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name', 50)->nullable(false);
-            $table->string('description', 100);
+            $table->string('description', 100)->nullable(true);
             $table->enum('status', [Tab::STATUS_ACTIVE, Tab::STATUS_PENDING])->default(Tab::STATUS_PENDING);
 
             // Timestamps
