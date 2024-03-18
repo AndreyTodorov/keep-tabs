@@ -113,68 +113,76 @@ export function TransactionDialogForm({
 				</DialogHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-						<FormField
-							control={form.control}
-							name="amount"
-							render={({ field }) => (
-								<FormItem>
-									<FormLabel>Amount</FormLabel>
-									<FormControl>
-										<AmountInput
-											required
-											className="w-48"
-											precision={2}
-											{...field}
-										/>
-									</FormControl>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
-						<FormField
-							control={form.control}
-							name="date"
-							render={({ field }) => (
-								<FormItem className="flex flex-col">
-									<FormLabel>Date</FormLabel>
-									<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
-										<PopoverTrigger asChild>
-											<FormControl>
-												<Button
-													variant="outline"
-													className={cn(
-														"w-48 text-left font-normal",
-														!field.value && "text-muted-foreground",
-													)}
-												>
-													{field.value ? (
-														dayjs(field.value).format(DATE_FORMATS.DATE_FORMAT)
-													) : (
-														<span>Pick a date</span>
-													)}
-													<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-												</Button>
-											</FormControl>
-										</PopoverTrigger>
-										<PopoverContent className="w-auto p-0" align="start">
-											<Calendar
-												mode="single"
-												selected={field.value}
-												onSelect={(date) => {
-													field.onChange(date);
-													setIsPopoverOpen(false);
-												}}
-												disabled={(date) =>
-													date > new Date() || date < new Date("2024-01-01")
-												}
-												initialFocus
+						<div className="flex items-end justify-between gap-2">
+							<FormField
+								control={form.control}
+								name="amount"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Amount</FormLabel>
+										<FormControl>
+											<AmountInput
+												required
+												className="w-48"
+												precision={2}
+												{...field}
 											/>
-										</PopoverContent>
-									</Popover>
-									<FormMessage />
-								</FormItem>
-							)}
-						/>
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="date"
+								render={({ field }) => (
+									<FormItem>
+										<FormLabel>Date</FormLabel>
+										<Popover
+											open={isPopoverOpen}
+											onOpenChange={setIsPopoverOpen}
+										>
+											<PopoverTrigger asChild>
+												<FormControl>
+													<Button
+														variant="outline"
+														className={cn(
+															"w-48 text-left font-normal",
+															!field.value && "text-muted-foreground",
+														)}
+													>
+														{field.value ? (
+															dayjs(field.value).format(
+																DATE_FORMATS.DATE_FORMAT,
+															)
+														) : (
+															<span>Pick a date</span>
+														)}
+														<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+													</Button>
+												</FormControl>
+											</PopoverTrigger>
+											<PopoverContent className="w-auto p-0" align="start">
+												<Calendar
+													mode="single"
+													selected={field.value}
+													onSelect={(date) => {
+														field.onChange(date);
+														setIsPopoverOpen(false);
+													}}
+													disabled={(date) =>
+														date > new Date() || date < new Date("2024-01-01")
+													}
+													initialFocus
+												/>
+											</PopoverContent>
+										</Popover>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+						</div>
+
 						<FormField
 							control={form.control}
 							name="comment"

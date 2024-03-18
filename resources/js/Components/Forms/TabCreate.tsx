@@ -43,6 +43,7 @@ export function TabCreateDialog() {
 			description: "",
 			users: [{ email: "" }],
 		},
+		mode: "all",
 	});
 	const { fields, append, remove } = useFieldArray({
 		control: form.control,
@@ -105,12 +106,12 @@ export function TabCreateDialog() {
 							)}
 						/>
 
-						{fields.map((item, index) => {
+						{fields.map((item, index, items) => {
 							// TODO: add dropdown with emails search
 							return (
 								<div
 									key={item.id}
-									className="flex w-full items-center justify-between gap-2"
+									className="flex w-full items-end justify-between gap-2"
 								>
 									<FormField
 										control={form.control}
@@ -125,13 +126,16 @@ export function TabCreateDialog() {
 											</FormItem>
 										)}
 									/>
-									<div className="flex gap-1">
-										<Button variant="outline">
-											<Minus
-												className="h-4 w-4 text-red-600"
-												onClick={() => remove(index)}
-											/>
-										</Button>
+									<div className="flex h-full gap-1">
+										{items.length > 1 && (
+											<Button variant="outline">
+												<Minus
+													className="h-4 w-4 text-red-600"
+													onClick={() => remove(index)}
+												/>
+											</Button>
+										)}
+
 										<Button
 											variant="outline"
 											onClick={() => append({ email: "" })}
